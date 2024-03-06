@@ -42,6 +42,16 @@ Here is the tables with three more fields:
 
 ## The new tables in Fourth Normal Form (4NF)
 To convert the table to the Fourth Normal Form (4NF), we need to ensure that it eliminates any multi-valued dependencies and maintains the integrity of the data. Based on the provided data and assumptions, we can derive the following entities:
+1. assignment
+2. student
+3. professor
+4. course
+5. section
+6. grade
+7. enrollment
+
+Then I abstract some attributes from the orginal table to each of them. And then split the original table into seven tables in 4NF.
+
 1. **Assignment Table**
 - assignment_id (Primary Key)
 - due_date (due date of assignment)
@@ -60,8 +70,8 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 
 2. **Student Table**
 - student_id (Primary Key)
-- student_name (Added to store the student’s name)
-- student_email(Added to store the student’s email)
+- student_name (Added to store the student’s name)(name of student)
+- student_email(Added to store the student’s email)(email of student)
 
 | student_id | student_name         | student_email   |
 |------------|----------------------|-----------------|
@@ -73,8 +83,8 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 
 
 3. **Professors Table**
-- professor_email (Primary Key)
-- professor
+- professor_email (Primary Key)(email of professor)
+- professor (name of professor)
 
 | professor_email   | professor  |
 |-------------------|------------|
@@ -85,7 +95,7 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 
 4. **Courses Table**
 - course_code (Primary Key)
-- course_name (Added to store the name of the course)
+- course_name (Added to store the name of the course) (name of course)
 
 | course_code | course_name |
 |-------------|-------------|
@@ -99,9 +109,9 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 
 5. **Sections Table**:
 - section_id (Primary Key)
-- course_id (Foreign Key)
-- professor_email (Foreign Key)
-- classroom_location ((Added to store the name of the course))
+- course_id (Foreign Key) (the course the section belongs to)
+- professor_email (Foreign Key) (the professor who teach the section)
+- classroom_location ((Added to store the name of the course)) (the location of the section)
 
 | section_id | course_id  | professor_email  | classroom_location |
 |---------------------------|--------------------------|-------------------------------|--------------------|
@@ -115,9 +125,9 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 
 6. **Grades Table**:
 - grade_id (Primary Key)
-- assignment_id (Foreign Key)
-- student_id (Foreign Key)
-- grade
+- assignment_id (Foreign Key) (assignment the grade belongs to)
+- student_id (Foreign Key) (student who get the grade)
+- grade (actual grade)
 
 | grade_id| assignment_id | student_id  | grade |
 |-------------------------|-----------------------------|--------------------------|-------|
@@ -130,8 +140,8 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 
 7. **Enrollment Table**:
 - enrollment_id (Primary Key)
-- student_id (Foreign Key)
-- section_id (Foreign Key)
+- student_id (Foreign Key) (student who entroll the section)
+- section_id (Foreign Key) (which section the student enrolled)
 
 |enrollment_id|student_id|section_id|
 |-------------|----------|----------|
@@ -146,4 +156,24 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 Here is the ER diagram:
 
 ![ER diagram](ER%20diagram.png)
+
+Tips: I didn't draw foreign keys in this diagram, but I mentioned them before.
+
+### Explaination of the diagram
+Relationship
+1. **The relationship between assignment and section**: In a university setting, multiple assignments can be associated with a single section, and each assignment can be assigned to multiple sections. Therefore, the relationship between assignments and sections is usually `many-to-many`.
+2. **The relationship between professor and section**: The relationship between professors and sections can vary depending on the structure of the university or educational institution. In my case, a section is typically associated with one professor who teaches it. However, a professor may teach multiple sections, especially in larger courses or when covering multiple sections of the same course. Therefore, the relationship between professor and section is often `one-to-many`, where one professor can be associated with multiple sections, but each section is typically associated with only one professor.
+3. **The relationship between student and enrollment**: 
+The relationship between students and enrollment is typically `one-to-many`, meaning one student can be enrolled in multiple sections, but each enrollment corresponds to only one student.
+4. **The relationship between enrollment and section**: 
+The relationship between enrollment and section is `one-to-many`. This means that one enrollment can be associated with only one section, but each section can have multiple enrollments, representing multiple students enrolled in that section.
+5. **The relationship between student and grades**:
+The relationship between student and grades is `one-to-many`. This means that one student can have multiple grades associated with them, as they can complete multiple assignments in different sections. However, each grade is specific to one student.
+6. **The relationship between grades and assignment**:
+The relationship between grade and assignment is `one-to-one`. Each grade corresponds to one specific assignment, indicating the score achieved by a student on that assignment. Conversely, each assignment has one grade associated with it, representing the evaluation of the student's performance on that particular assignment.
+7. **The relationship between courses and sections**: 
+The relationship between course and section is `one-to-many`. A course can have multiple sections, each representing a different offering of the course at a specific time, location, or with a different instructor. Conversely, each section belongs to exactly one course, indicating the specific course it is associated with.
+
+
+
 
