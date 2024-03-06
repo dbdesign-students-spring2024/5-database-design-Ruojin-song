@@ -146,10 +146,10 @@ Then I abstract some attributes from the orginal table to each of them. And then
 |enrollment_id|student_id|section_id|
 |-------------|----------|----------|
 |1|1|10101|
-|2|7|CS201|
-|3|4|CS101|
-|4|2|CS203|
-|5|2|BUS102|
+|2|7|31401|
+|3|4|10102|
+|4|2|31402|
+|5|2|20101|
 |...|...|...|
 
 ## ER diagram of 4NF-compliant version of the data set
