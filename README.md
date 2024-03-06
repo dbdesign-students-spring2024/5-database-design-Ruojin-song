@@ -13,7 +13,7 @@ The following table is the original table, representing students' grades in cour
 | 4             | 2          | 04.07.21 | Nevarez   | Spreadsheet aggregate functions | WWH 201   | 65    | Zehnder Page 87     | i.nevarez@foo.edu |
 | ...           | ...        | ...      | ...       | ...                             | ...       | ...   | ...                 | ...               |
 ### Adding obvious missing fields as additional fields
-In this case, I decided to add three additional fields:
+In this case, I decided to add 6 additional fields:
 1. **student_name**: Name of student.
 2. **student_email**: Email of student.
 1. **course_name**: Name of the course.
@@ -34,20 +34,20 @@ Here is the tables with three more fields:
 
 
 ### What makes the original data set not compliant with 4NF
-1. This dataset is not compliant with Fourth Normal Form (4NF) primarily due to the presence of **more than one independent multi-valued fact about an entity**. To be more specific, a single student might have multiple assignments and multiple professors. For example, the student with id 2 has two different assignments and two different professors. And a single assignment can be done by multiple students, like assignment with id1.
+1. This dataset is not compliant with Fourth Normal Form (4NF) primarily due to the presence of **more than one independent multi-valued fact about an entity**. To be more specific, a single student might have multiple assignments and multiple professors. For example, the student with id 2 has two different assignments and two different professors.
 
 2. There is **redundant information** in the table, such as the professor_email and the due_date, which are repeated for each student-assignment combination. This redundancy could be eliminated by normalizing the data.
 
 3. Then, this dataset is not compliant with 4NF due to that **a non-key field is a fact about another non-key field**. To be more specific, professor_email is a fact about professor which is a non-key field.
 
-## The new table in Fourth Normal Form (4NF)
-To convert the table to the Fourth Normal Form (4NF), we need to ensure that it eliminates any multi-valued dependencies and maintains the integrity of the data. Based on the provided data and assumptions, we can derive the following relations:
+## The new tables in Fourth Normal Form (4NF)
+To convert the table to the Fourth Normal Form (4NF), we need to ensure that it eliminates any multi-valued dependencies and maintains the integrity of the data. Based on the provided data and assumptions, we can derive the following entities:
 1. **Assignment Table**
 - assignment_id (Primary Key)
-- due_date
-- assignment_topic
-- relevant_reading
-- section_id (Foreign Key)
+- due_date (due date of assignment)
+- assignment_topic (topic of assignment)
+- relevant_reading (relevant reading provided according to each assignment)
+- section_id (Foreign Key) (the section assignment belongs to)
 
 | assignment_id | section_id | due_date | assignment_topic           | relevant_reading      |
 |---------------|------------|----------|----------------------------|-----------------------|
@@ -72,8 +72,6 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 |...|...|...|
 
 
-
-
 3. **Professors Table**
 - professor_email (Primary Key)
 - professor
@@ -83,6 +81,7 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 | l.melvin@foo.edu | Melvin     |
 | e.logston@foo.edu| Logston    |
 | i.nevarez@foo.edu| Nevarez    |
+|...|...|
 
 4. **Courses Table**
 - course_code (Primary Key)
@@ -94,6 +93,7 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 | BUS102      | Spreadsheet Applications |
 | CS201       | Database Management |
 | CS203       | Data Analysis with Python |
+|...|...|
 
 
 
@@ -110,6 +110,7 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 | 20101                     | BUS102                   | i.nevarez@foo.edu            | 7 East 12th St Room LL25 |
 | 31401                     | CS201                    | e.logston@foo.edu            | 194 Mercer St Room 203 |
 | 31402                     | CS203                    | e.logston@foo.edu            | 194 Mercer St Room 304 |
+...|...|...|...|...|
 
 
 6. **Grades Table**:
@@ -125,6 +126,7 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 | 3                       | 1                           | 4                        | 75    |
 | 4                       | 5                           | 2                        | 92    |
 | 5                       | 4                           | 2                        | 65    |
+...|...|...|...|
 
 7. **Enrollment Table**:
 - enrollment_id (Primary Key)
@@ -139,3 +141,9 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 |4|2|CS203|
 |5|2|BUS102|
 |...|...|...|
+
+## ER diagram of 4NF-compliant version of the data set
+Here is the ER diagram:
+
+![ER diagram](ER%20diagram.png)
+
