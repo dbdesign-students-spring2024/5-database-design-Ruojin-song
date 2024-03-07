@@ -48,7 +48,7 @@ To convert the table to the Fourth Normal Form (4NF), we need to ensure that it 
 4. course
 5. section
 6. grade
-7. enrollment
+
 
 Then I abstract some attributes from the orginal table to each of them. And then split the original table into seven tables in 4NF.
 
@@ -68,6 +68,39 @@ Then I abstract some attributes from the orginal table to each of them. And then
 | 5             | 31402      | 05.05.21 | Python and pandas          | Dümmlers Chapter 14   |
 |...|...|...|...|...|
 
+For this table, I found that there are still multi-valued dependencies, like one assignment can be assigned to multiple sections and thus have multiple due dates. So I decided to split the table again to satisfy the 4NF. I want to assume that a specific assignment_id has the specific topic and relevant_reading. 
+
+One is `assignment`:
+| assignment_id |assignment_topic           | relevant_reading      |
+|---------------|----------------------------------|-----------------------|
+| 1             | Data normalization         | Deumlich Chapter 3    |
+| 2             |  Single table queries       | Dümmlers Chapter 11   |
+| 4             |  Spreadsheet aggregate functions | Zehnder Page 87   |
+| 5             |  Python and pandas          | Dümmlers Chapter 14   |
+|...|...|...|
+
+Another for `assignment_section`
+
+
+assignment_section_id| assignment_id | section_id | 
+|---------|---------------|------------|
+|1| 1             | 10101      |  
+|2| 1             | 10102      | 
+|3| 2             | 31401      |  
+|4| 4             | 20101      | 
+|5| 5             | 31402      | 
+|...|...|...|
+
+Another for `assignment_section_and_due_date`
+
+| assignment_section_id | due_date |
+|---------------|------------|
+| 1             | 23.02.21 |
+| 2             | 18.11.21 | 
+| 4             |  04.07.21 | 
+| 5             |  05.05.21 |
+|...|...|...|...|...|
+
 2. **Student Table**
 - student_id (Primary Key)
 - student_name (Added to store the student’s name)(name of student)
@@ -85,6 +118,8 @@ Then I abstract some attributes from the orginal table to each of them. And then
 3. **Professors Table**
 - professor_email (Primary Key)(email of professor)
 - professor (name of professor)
+
+We assume professor have different emails from each other. 
 
 | professor_email   | professor  |
 |-------------------|------------|
@@ -112,17 +147,50 @@ Then I abstract some attributes from the orginal table to each of them. And then
 - course_id (Foreign Key) (the course the section belongs to)
 - professor_email (Foreign Key) (the professor who teach the section)
 - location of the section
+- student_id (which student enroll this section)
 
+We assume that a section is belong to a specific course and in specific location. However, one section can be taught by more than one professors. So the table is still not in 4NF.
 
-| section_id | course_code | professor_email  | section_location
-|---------------------------|--------------------------|-------------------------------|---------
-| 10101                     | CS101                    | l.melvin@foo.edu             | Mercer St Room 109
-| 10102                     | CS101                    | l.melvin@foo.edu             | 12 Waverly PI Room G08
-| 20101                     | BUS102                   | i.nevarez@foo.edu            | 7 East 12th St Room LL25
-| 31401                     | CS201                    | e.logston@foo.edu            | 194 Mercer St Room 203
-| 31402                     | CS203                    | e.logston@foo.edu            | 194 Mercer St Room 304
+| section_id | course_code | professor_email  | section_location|student_id|
+|---------------------------|--------------------------|-------------------------------|---------|-----|
+| 10101                     | CS101                    | l.melvin@foo.edu             | Mercer St Room 109|1
+| 10102                     | CS101                    | l.melvin@foo.edu             | 12 Waverly PI Room G08|3
+| 20101                     | BUS102                   | i.nevarez@foo.edu            | 7 East 12th St Room LL25|4
+| 31401                     | CS201                    | e.logston@foo.edu            | 194 Mercer St Room 203|2
+| 31402                     | CS203                    | e.logston@foo.edu            | 194 Mercer St Room 304|2
 ...|...|...|...|...|
 
+However, one section can be taught by more than one professors. And one section can be enrolled by multiple students. So the table is still not in 4NF. So I decided to split the table into more 4NF tables.
+
+One is `section`
+| section_id | course_code | section_location
+|---------------------------|-------------------------------|---------
+| 10101                     | CS101                     | Mercer St Room 109
+| 10102                     | CS101                    | 12 Waverly PI Room G08
+| 20101                     | BUS102                   | 7 East 12th St Room LL25
+| 31401                     | CS201                    | 194 Mercer St Room 203
+| 31402                     | CS203                    | 194 Mercer St Room 304
+...|...|...|
+
+Another one is `section_and_professor_email`
+| section_id |professor_email  | 
+|---------------------------|--------------------------|
+| 10101                     | l.melvin@foo.edu             |
+| 10102                     | l.melvin@foo.edu             | 
+| 20101                     |  i.nevarez@foo.edu            | 
+| 31401                     |  e.logston@foo.edu            | 
+| 31402                      | e.logston@foo.edu            | 
+...|...|
+
+Another one is `section_and_student_id`
+| section_id | student_id|
+|---------------------------|-------|
+| 10101                     |1
+| 10102                     |3
+| 20101                     |4
+| 31401                     |2
+| 31402                     |2
+...|...|...|...|...|
 
 6. **Grades Table**:
 - grade_id (Primary Key)
@@ -139,19 +207,29 @@ Then I abstract some attributes from the orginal table to each of them. And then
 | 5                       | 4                           | 2                        | 65    |
 ...|...|...|...|
 
-7. **Enrollment Table**:
-- enrollment_id (Primary Key)
-- student_id (Foreign Key) (student who enrolls the section)
-- section_id (Foreign Key) (which section the student enrolls)
+In the context of the grade table, the primary key is the grade_id. However, we have a transitive dependency between the assignment_id, student_id, and grade. So I split the table into many tables in 4NF.
 
-|enrollment_id|student_id|section_id|
-|-------------|----------|----------|
-|1|1|10101|
-|2|7|31401|
-|3|4|10102|
-|4|2|31402|
-|5|2|20101|
-|...|...|...|
+The first one is `assignment_student` table
+
+| assignment_student_id| assignment_id | student_id  | 
+|-------------------------|-----------------------------|--------------------------|
+| 1                       | 1                           | 1                        | 
+| 2                       | 2                           | 7                        | 
+| 3                       | 1                           | 4                        | 
+| 4                       | 5                           | 2                        |
+| 5                       | 4                           | 2                        | 
+...|...|...|
+
+The next one is `grade` table
+| grade_id| assignment_student_id | grade |
+|-------------------------|---------------------------|-------|
+| 1                       | 1                                               | 80    |
+| 2                       | 2                           | 25    |
+| 3                       | 3                         | 75    |
+| 4                       | 4                           |  92    |
+| 5                       | 5                           | 65    |
+...|...|...|...|
+
 
 
 ## ER diagram of 4NF-compliant version of the data set
