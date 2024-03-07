@@ -157,7 +157,7 @@ Then I abstract some attributes from the orginal table to each of them. And then
 ## ER diagram of 4NF-compliant version of the data set
 Here is the ER diagram:
 
-![ER diagram](ER%20diagram.png)
+![Pushing work in Visual Studio Code](ER%20diagram.png)
 
 Tips: I didn't draw foreign keys in this diagram, but I mentioned them before.
 
