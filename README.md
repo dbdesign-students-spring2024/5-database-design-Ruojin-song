@@ -19,11 +19,11 @@ In this case, I decided to add 6 additional fields:
 1. **course_name**: Name of the course.
 2. **section_id**: Identifier for the specific section of the course.
 3. **course_code**: Unique code assigned to the course, useful for identification purposes.
-4. **classroom_location**: Location of classroom
+4. **section_location**: Location of classroom
 
 Here is the tables with three more fields:
 
-|assignment_id | student_id |student_name|student_email| due_date | professor | assignment_topic | classroom | grade | relevant_reading | professor_email | course_name | section_id | course_code|classroom_location|
+|assignment_id | student_id |student_name|student_email| due_date | professor | assignment_topic | classroom | grade | relevant_reading | professor_email | course_name | section_id | course_code|section_location|
 |--------|----|-----|-------------|-----|---------|----|-----|----------|---------|------------|---------------|--------------|------------------|------------------|
 |1              | 1            |Peter Wang|PW3445@uni.edu| 23.02.21  | Melvin       | Data normalization | WWH 101 | 80      | Deumlich Chapter 3 | l.melvin@foo.edu | Introduction to Database Systems | 10101 | CS101| 251 Mercer St Room 109
 |2              | 7            |Leo Song|LS3458@uni.edu| 18.11.21  | Logston     | Single table queries  | 60FA 314 | 25     | Dümmlers Chapter 11 | e.logston@foo.edu | Database Management | 31401 | CS201|194 Mercer St Room 203
@@ -111,15 +111,16 @@ Then I abstract some attributes from the orginal table to each of them. And then
 - section_id (Primary Key)
 - course_id (Foreign Key) (the course the section belongs to)
 - professor_email (Foreign Key) (the professor who teach the section)
-- classroom_location ((Added to store the name of the course)) (the location of the section)
+- location of the section
 
-| section_id | course_id  | professor_email  | classroom_location |
-|---------------------------|--------------------------|-------------------------------|--------------------|
-| 10101                     | CS101                    | l.melvin@foo.edu             | 251 Mercer St Room 109 |
-| 10102                     | CS101                    | l.melvin@foo.edu             | 12 Waverly PI Room G08 |
-| 20101                     | BUS102                   | i.nevarez@foo.edu            | 7 East 12th St Room LL25 |
-| 31401                     | CS201                    | e.logston@foo.edu            | 194 Mercer St Room 203 |
-| 31402                     | CS203                    | e.logston@foo.edu            | 194 Mercer St Room 304 |
+
+| section_id | course_code | professor_email  | section_location
+|---------------------------|--------------------------|-------------------------------|---------
+| 10101                     | CS101                    | l.melvin@foo.edu             | Mercer St Room 109
+| 10102                     | CS101                    | l.melvin@foo.edu             | 12 Waverly PI Room G08
+| 20101                     | BUS102                   | i.nevarez@foo.edu            | 7 East 12th St Room LL25
+| 31401                     | CS201                    | e.logston@foo.edu            | 194 Mercer St Room 203
+| 31402                     | CS203                    | e.logston@foo.edu            | 194 Mercer St Room 304
 ...|...|...|...|...|
 
 
@@ -140,8 +141,8 @@ Then I abstract some attributes from the orginal table to each of them. And then
 
 7. **Enrollment Table**:
 - enrollment_id (Primary Key)
-- student_id (Foreign Key) (student who entroll the section)
-- section_id (Foreign Key) (which section the student enrolled)
+- student_id (Foreign Key) (student who enrolls the section)
+- section_id (Foreign Key) (which section the student enrolls)
 
 |enrollment_id|student_id|section_id|
 |-------------|----------|----------|
@@ -151,6 +152,7 @@ Then I abstract some attributes from the orginal table to each of them. And then
 |4|2|31402|
 |5|2|20101|
 |...|...|...|
+
 
 ## ER diagram of 4NF-compliant version of the data set
 Here is the ER diagram:
