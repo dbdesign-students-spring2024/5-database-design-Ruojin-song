@@ -243,10 +243,7 @@ Tips: I didn't draw foreign keys in this diagram, but I mentioned them before.
 Relationship
 1. **The relationship between assignment and section**: In a university setting, multiple assignments can be associated with a single section, and each assignment can be assigned to multiple sections. Therefore, the relationship between assignments and sections is usually `many-to-many`.
 2. **The relationship between professor and section**: The relationship between professors and sections can vary depending on the structure of the university or educational institution. In my case, a section is typically associated with one professor who teaches it. However, a professor may teach multiple sections, especially in larger courses or when covering multiple sections of the same course. Therefore, the relationship between professor and section is often `one-to-many`, where one professor can be associated with multiple sections, but each section is typically associated with only one professor.
-3. **The relationship between student and enrollment**: 
-The relationship between students and enrollment is typically `one-to-many`, meaning one student can be enrolled in multiple sections, but each enrollment corresponds to only one student.
-4. **The relationship between enrollment and section**: 
-The relationship between enrollment and section is `one-to-many`. This means that one enrollment can be associated with only one section, but each section can have multiple enrollments, representing multiple students enrolled in that section.
+4. **The relationship between student and section**: The relationship between students and sections is `many-to-many`. This means that one student can enroll multiple sections and one sections can also have multiple students.
 5. **The relationship between student and grades**:
 The relationship between student and grades is `one-to-many`. This means that one student can have multiple grades associated with them, as they can complete multiple assignments in different sections. However, each grade is specific to one student.
 6. **The relationship between grades and assignment**:
