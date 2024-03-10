@@ -149,7 +149,7 @@ We assume professor have different emails from each other.
 - location of the section
 - student_id (which student enroll this section)
 
-We assume that a section is belong to a specific course and in specific location. However, one section can be taught by more than one professors. So the table is still not in 4NF.
+We assume that a section is belong to a specific course and in specific location. 
 
 | section_id | course_code | professor_email  | section_location|student_id|
 |---------------------------|--------------------------|-------------------------------|---------|-----|
@@ -207,7 +207,7 @@ Another one is `section_and_student_id`
 | 5                       | 4                           | 2                        | 65    |
 ...|...|...|...|
 
-In the context of the grade table, the primary key is the grade_id. However, we have a transitive dependency between the assignment_id, student_id, and grade. So I split the table into many tables in 4NF.
+However, in this table, one grade_id can be assigned to multiple assignments and multiple students. It is not in 4NF, since there are multi-valued denpendencies. So I decided to split it into other tables.
 
 The first one is `assignment_student` table
 
@@ -220,15 +220,26 @@ The first one is `assignment_student` table
 | 5                       | 4                           | 2                        | 
 ...|...|...|
 
-The next one is `grade` table
-| grade_id| assignment_student_id | grade |
-|-------------------------|---------------------------|-------|
-| 1                       | 1                                               | 80    |
-| 2                       | 2                           | 25    |
-| 3                       | 3                         | 75    |
-| 4                       | 4                           |  92    |
-| 5                       | 5                           | 65    |
+The next one is `grade` table. One grade_id represents one specific grade.
+| grade_id| grade |
+|------------------------------------------|-------|
+| 1                              | 80    |
+| 2                                   | 25    |
+| 3                                        | 75    |
+| 4                             |  92    |
+| 5                              | 65    |
 ...|...|...|...|
+
+The next one is `grade_assignment_student` table.
+| grade_id| assignment_student_id |
+|-------------------------|---------------------------|
+| 1                       | 1                                               | 
+| 2                       | 2                           | 
+| 2                      | 3                         | 
+| 3                    | 4                          
+| 4                       | 5                         
+...|...|...|
+
 
 
 
