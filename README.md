@@ -160,7 +160,7 @@ We assume that a section is belong to a specific course and in specific location
 | 31402                     | CS203                    | e.logston@foo.edu            | 194 Mercer St Room 304|2
 ...|...|...|...|...|
 
-However, one section can be taught by more than one professors. And one section can be enrolled by multiple students. So the table is still not in 4NF. So I decided to split the table into more 4NF tables.
+However, one section can be taught by more than one professors. (For example, I took a class called ds101 which taught by two different professors.) And one section can be enrolled by multiple students. So the table is still not in 4NF. So I decided to split the table into more 4NF tables.
 
 One is `section`
 | section_id | course_code | section_location
@@ -198,6 +198,8 @@ Another one is `section_and_student_id`
 - student_id (Foreign Key) (student who get the grade)
 - grade (actual grade)
 
+One grade_id has one specific assignment_id and student_id.
+
 | grade_id| assignment_id | student_id  | grade |
 |-------------------------|-----------------------------|--------------------------|-------|
 | 1                       | 1                           | 1                        | 80    |
@@ -207,38 +209,6 @@ Another one is `section_and_student_id`
 | 5                       | 4                           | 2                        | 65    |
 ...|...|...|...|
 
-However, in this table, one grade_id can be assigned to multiple assignments and multiple students. It is not in 4NF, since there are multi-valued denpendencies. So I decided to split it into other tables.
-
-The first one is `assignment_student` table
-
-| assignment_student_id| assignment_id | student_id  | 
-|-------------------------|-----------------------------|--------------------------|
-| 1                       | 1                           | 1                        | 
-| 2                       | 2                           | 7                        | 
-| 3                       | 1                           | 4                        | 
-| 4                       | 5                           | 2                        |
-| 5                       | 4                           | 2                        | 
-...|...|...|
-
-The next one is `grade` table. One grade_id represents one specific grade.
-| grade_id| grade |
-|------------------------------------------|-------|
-| 1                              | 80    |
-| 2                                   | 25    |
-| 3                                        | 75    |
-| 4                             |  92    |
-| 5                              | 65    |
-...|...|...|...|
-
-The next one is `grade_assignment_student` table.
-| grade_id| assignment_student_id |
-|-------------------------|---------------------------|
-| 1                       | 1                                               | 
-| 2                       | 2                           | 
-| 2                      | 3                         | 
-| 3                    | 4                          
-| 4                       | 5                         
-...|...|...|
 
 
 
